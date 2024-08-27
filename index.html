@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>PHTTC - 2024</title>
+</head>
+
+<body onload="myFunction()">
+    <div class="loader" id="loader"></div>
+    
+    <section id="myDiv" style="display:none;">
+        <div class="logo">
+            <img src="./PHTTC_Logo.png" width="100%" alt="">
+        </div>
+    </section>
+    <section id="myDiv2" class="coming" style="display:none;">
+        <canvas id='beerCanvas'></canvas>
+        <div class="coming_content">
+            <h1>COMING SOON</h1>
+            <p></p>
+            <div class="separator_container">
+                <!-- <div class="separator line_separator"> </div> -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        var myVar;
+
+        function myFunction() {
+            myVar = setTimeout(showPage, 3000);
+        }
+
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("myDiv").style.display = "block";
+            document.getElementById("myDiv2").style.display = "block";
+        }
+
+        var canvas = document.getElementById('beerCanvas');
+        var ctx = canvas.getContext('2d');
+        var particles = [];
+        var particleCount = 280;
+
+        for (var i = 0; i < particleCount; i++) {
+            particles.push(new particle());
+        }
+
+        function particle() {
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + Math.random() * 300;
+            this.speed = 1 + Math.random();
+            this.radius = Math.random() * 3;
+            this.opacity = (Math.random() * 100) / 1000;
+        }
+
+        function loop() {
+            requestAnimationFrame(loop);
+            draw();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = 'lighter';
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                ctx.beginPath();
+                ctx.fillStyle = 'rgba(255,255,255,' + p.opacity + ')';
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2, false);
+                ctx.fill();
+                p.y -= p.speed;
+                if (p.y <= -10)
+                    particles[i] = new particle();
+            }
+        }
+        loop();
+    </script>
+</body>
+
+</html>
